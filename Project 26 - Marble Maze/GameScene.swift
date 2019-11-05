@@ -25,13 +25,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var isGameOver = false
     var level = 0
     var allNodes: [SKSpriteNode] = []
+    var teleportPosition: [CGPoint] = []
+    var teleportingEnabled = true
     
     enum CollisionTypes: UInt32 {
         case player = 1
         case wall = 2
         case star = 4
         case vortex = 8
-        case finish = 16
+        case teleport = 16
+        case finish = 32
     }
     
     override func didMove(to view: SKView) {
@@ -49,7 +52,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(scoreLabel)
         
         loadLevel()
-        createPlayer()
+        createPlayer(at: CGPoint(x: 96, y: 672))
         
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
@@ -101,7 +104,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     // load finish
                     let node = SKSpriteNode(imageNamed: "finish")
                     createGameNode(node: node, position: position, name: "finish", collisionType: CollisionTypes.finish)
-                    
+                
+                } else if letter == "t" {
+                    // load teleport
+                    let node = SKSpriteNode(imageNamed: "bouncer")
+                    createGameNode(node: node, position: position, name: "teleport", collisionType: CollisionTypes.teleport)
+                    node.scale(to: CGSize(width: node.size.width / 2, height: node.size.width / 2))
+                    teleportPosition.append(position)
+                    print(teleportPosition)
                 } else if letter == " " {
                     // this is an empty space – do nothing!
                 } else {
@@ -124,9 +134,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }
     
-    func createPlayer() {
+    func createPlayer(at position: CGPoint) {
         player = SKSpriteNode(imageNamed: "player")
-        player.position = CGPoint(x: 96, y: 672)
+        player.position = position
         player.zPosition = 1
         player.physicsBody = SKPhysicsBody(circleOfRadius: player.size.width / 2)
         player.physicsBody?.allowsRotation = false
@@ -181,6 +191,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.physicsBody?.isDynamic = false
             isGameOver = true
             score -= 1
+            teleportingEnabled = true
+
             
             let move = SKAction.move(to: node.position, duration: 0.25)
             let scale = SKAction.scale(to: 0.0001, duration: 0.25)
@@ -188,19 +200,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let sequence = SKAction.sequence([move, scale, remove])
             
             player.run(sequence) { [weak self] in
-                self?.createPlayer()
+                self?.createPlayer(at: CGPoint(x: 96, y: 672))
                 self?.isGameOver = false
             }
         } else if node.name == "star" {
             node.removeFromParent()
             score += 1
+            
+        } else if node.name == "teleport" {
+            if teleportingEnabled {
+                let move = SKAction.move(to: node.position, duration: 0.50)
+                let scale = SKAction.scale(to: 0.0001, duration: 0.25)
+                let remove = SKAction.removeFromParent()
+                let sequence = SKAction.sequence([move, scale, remove])
+                
+                player.run(sequence) { [weak self] in
+                    self?.createPlayer(at: (self?.teleportPosition.first!)!)
+                }
+                
+                teleportingEnabled = false
+            }
+
+            
         } else if node.name == "finish" {
             // next level?
             for node in allNodes {
                 node.removeFromParent()
             }
             allNodes.removeAll()
-            createPlayer()
+            createPlayer(at: CGPoint(x: 96, y: 672))
             isGameOver = false
             loadLevel()
         }
