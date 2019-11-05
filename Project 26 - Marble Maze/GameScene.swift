@@ -24,6 +24,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var motionManger: CMMotionManager?
     var isGameOver = false
     var level = 0
+    var allNodes: [SKSpriteNode] = []
     
     enum CollisionTypes: UInt32 {
         case player = 1
@@ -61,8 +62,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func loadLevel() {
         level += 1
-        guard let levelURL = Bundle.main.url(forResource: "level1", withExtension: "txt") else {
-            fatalError("Could not find level1.txt in the app bundle.")
+        
+        guard let levelURL = Bundle.main.url(forResource: "level\(level)", withExtension: "txt") else {
+            fatalError("Could not find level\(level).txt in the app bundle.")
         }
         guard let levelString = try? String(contentsOf: levelURL) else {
             fatalError("Could not load level1.txt from the app bundle.")
@@ -82,6 +84,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     node.physicsBody?.categoryBitMask = CollisionTypes.wall.rawValue
                     node.physicsBody?.isDynamic = false
                     addChild(node)
+                    allNodes.append(node)
                     
                 } else if letter == "v"  {
                     // load vortex
@@ -117,6 +120,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         node.physicsBody?.collisionBitMask = 0
         node.position = position
         addChild(node)
+        allNodes.append(node)
+
     }
     
     func createPlayer() {
@@ -131,6 +136,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.contactTestBitMask = CollisionTypes.star.rawValue | CollisionTypes.vortex.rawValue | CollisionTypes.finish.rawValue
         player.physicsBody?.collisionBitMask = CollisionTypes.wall.rawValue
         addChild(player)
+        allNodes.append(player)
+
     }
     
     
@@ -189,7 +196,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             score += 1
         } else if node.name == "finish" {
             // next level?
-            
+            for node in allNodes {
+                node.removeFromParent()
+            }
+            allNodes.removeAll()
+            createPlayer()
+            isGameOver = false
+            loadLevel()
         }
     }
     

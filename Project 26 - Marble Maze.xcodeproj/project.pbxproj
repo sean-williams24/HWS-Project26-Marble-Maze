@@ -15,6 +15,8 @@
 		CE7D1DF123718E6E005E692D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE7D1DF023718E6E005E692D /* Assets.xcassets */; };
 		CE7D1DF423718E6E005E692D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7D1DF223718E6E005E692D /* LaunchScreen.storyboard */; };
 		CE7D1DFC23718EEB005E692D /* level1.txt in Resources */ = {isa = PBXBuildFile; fileRef = CE7D1DFB23718EEB005E692D /* level1.txt */; };
+		CE7D1DFF2371DF0D005E692D /* level3.txt in Resources */ = {isa = PBXBuildFile; fileRef = CE7D1DFD2371DF0D005E692D /* level3.txt */; };
+		CE7D1E002371DF0D005E692D /* level2.txt in Resources */ = {isa = PBXBuildFile; fileRef = CE7D1DFE2371DF0D005E692D /* level2.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		CE7D1DF323718E6E005E692D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE7D1DF523718E6E005E692D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE7D1DFB23718EEB005E692D /* level1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level1.txt; sourceTree = "<group>"; };
+		CE7D1DFD2371DF0D005E692D /* level3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level3.txt; sourceTree = "<group>"; };
+		CE7D1DFE2371DF0D005E692D /* level2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level2.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,8 @@
 				CE7D1DF223718E6E005E692D /* LaunchScreen.storyboard */,
 				CE7D1DF523718E6E005E692D /* Info.plist */,
 				CE7D1DFB23718EEB005E692D /* level1.txt */,
+				CE7D1DFE2371DF0D005E692D /* level2.txt */,
+				CE7D1DFD2371DF0D005E692D /* level3.txt */,
 			);
 			path = "Project 26 - Marble Maze";
 			sourceTree = "<group>";
@@ -132,6 +138,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE7D1DFC23718EEB005E692D /* level1.txt in Resources */,
+				CE7D1E002371DF0D005E692D /* level2.txt in Resources */,
+				CE7D1DFF2371DF0D005E692D /* level3.txt in Resources */,
 				CE7D1DEF23718E6D005E692D /* Main.storyboard in Resources */,
 				CE7D1DE623718E6D005E692D /* GameScene.sks in Resources */,
 				CE7D1DF123718E6E005E692D /* Assets.xcassets in Resources */,
